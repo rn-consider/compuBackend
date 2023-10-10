@@ -3,6 +3,7 @@ package initialize
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rn-consider/compuBackend/config"
+	"github.com/rn-consider/compuBackend/routers"
 	"github.com/rn-consider/compuBackend/routers/middleware"
 	"github.com/rn-consider/compuBackend/utils"
 	"net/http"
@@ -24,14 +25,14 @@ func Routers() *gin.Engine {
 
 	Router.Use(middleware.Recovery())
 	Router.Use(middleware.Logger())
+	Router.Use(middleware.Cors())
 	HealthGroup := Router.Group("")
 	{
 		// 健康监测
 		HealthGroup.GET("/health", HealthCheck)
 	}
-
-	//ApiGroup := Router.Group("api/v1")
-	//apps.InitRouter(ApiGroup)
-
+	// 注册路由
+	routerGroup := Router.Group("")     // 创建一个路由组
+	routers.RegisterRoutes(routerGroup) // 注册路由到路由组
 	return Router
 }

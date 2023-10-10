@@ -18,9 +18,7 @@ type User struct {
 	UpdatedAt    time.Time
 }
 
-/*
-   User的增删改查
-*/
+// CreateUser /*
 // CreateUser 创建User字段
 func CreateUser(user *User) (err error) {
 	if err = dao.DB.Create(&user).Error; err != nil {

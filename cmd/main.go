@@ -15,7 +15,7 @@ type server interface {
 }
 
 func runServer(r *gin.Engine) {
-	address := ":9785"
+	address := ":8000"
 	s := initServer(address, r)
 
 	if err := s.ListenAndServe(); err != nil {
@@ -60,6 +60,7 @@ func main() {
 		return
 	}
 
+	// 启动服务器
 	runServer(router)
 
 	//err := dao.InitMySQL()

@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/rn-consider/compuBackend/dao"
+	"github.com/rn-consider/compuBackend/config"
 	"time"
 )
 
@@ -12,6 +12,8 @@ type Article struct {
 	PublishTime time.Time `gorm:"type:timestamp;not null" json:"publish_time"`
 	Author      string    `gorm:"type:varchar(255);not null" json:"author"`
 	Content     string    `gorm:"type:text;not null" json:"content"`
+	CreatedAt   time.Time `gorm:"type:timestamp;not null" json:"created_at"`
+	UpdatedAt   time.Time `gorm:"type:timestamp;not null" json:"updated_at"`
 }
 
 // TableName 指定表名为 "articles"
@@ -25,7 +27,7 @@ func (Article) TableName() string {
 
 // CreateArticle 创建文章
 func CreateArticle(article *Article) error {
-	if err := dao.DB.Create(article).Error; err != nil {
+	if err := config.GVA_DB.Create(article).Error; err != nil {
 		return err
 	}
 	return nil
@@ -33,7 +35,7 @@ func CreateArticle(article *Article) error {
 
 // DeleteArticle 根据主键删除文章
 func DeleteArticle(id uint) error {
-	if err := dao.DB.Where("id = ?", id).Delete(&Article{}).Error; err != nil {
+	if err := config.GVA_DB.Where("id = ?", id).Delete(&Article{}).Error; err != nil {
 		return err
 	}
 	return nil
@@ -41,7 +43,7 @@ func DeleteArticle(id uint) error {
 
 // UpdateArticle 更新文章
 func UpdateArticle(article *Article) error {
-	if err := dao.DB.Save(article).Error; err != nil {
+	if err := config.GVA_DB.Save(article).Error; err != nil {
 		return err
 	}
 	return nil
@@ -50,7 +52,7 @@ func UpdateArticle(article *Article) error {
 // GetAllArticles 获取所有文章
 func GetAllArticles() ([]*Article, error) {
 	var articles []*Article
-	if err := dao.DB.Find(&articles).Error; err != nil {
+	if err := config.GVA_DB.Find(&articles).Error; err != nil {
 		return nil, err
 	}
 	return articles, nil
@@ -59,7 +61,7 @@ func GetAllArticles() ([]*Article, error) {
 // GetArticleByID 根据ID获取文章
 func GetArticleByID(id uint) (*Article, error) {
 	var article Article
-	if err := dao.DB.Where("id = ?", id).First(&article).Error; err != nil {
+	if err := config.GVA_DB.Where("id = ?", id).First(&article).Error; err != nil {
 		return nil, err
 	}
 	return &article, nil
