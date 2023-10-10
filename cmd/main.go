@@ -2,11 +2,34 @@ package main
 
 import (
 	"database/sql"
+	"github.com/fvbock/endless"
+	"github.com/gin-gonic/gin"
 	"github.com/rn-consider/compuBackend/cmd/initialize"
 	"github.com/rn-consider/compuBackend/config"
 	"go.uber.org/zap"
+	"time"
 )
 
+type server interface {
+	ListenAndServe() error
+}
+
+func runServer(r *gin.Engine) {
+	address := ":9785"
+	s := initServer(address, r)
+
+	if err := s.ListenAndServe(); err != nil {
+		config.GVA_LOG.Error(err.Error())
+	}
+}
+
+func initServer(address string, router *gin.Engine) server {
+	s := endless.NewServer(address, router)
+	s.ReadHeaderTimeout = 20 * time.Second
+	s.WriteTimeout = 20 * time.Second
+	s.MaxHeaderBytes = 1 << 20
+	return s
+}
 func main() {
 	// 初始化配置读取
 	config.GVA_VP = initialize.Viper()
@@ -27,9 +50,17 @@ func main() {
 			}
 		}(db)
 	} else {
-		zap.L().Error("数据库启动失败...") // 使用 Zap 打印数据库关闭失败的错误信息
+		zap.L().Error("数据库启动失败，是否创建了指定数据库？...") // 使用 Zap 打印数据库关闭失败的错误信息
 		return
 	}
+
+	// 初始化Router
+	router := initialize.Routers()
+	if router == nil {
+		return
+	}
+
+	runServer(router)
 
 	//err := dao.InitMySQL()
 	//file, err := os.Create("./issucc ess.txt")
