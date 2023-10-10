@@ -1,21 +1,46 @@
 package main
 
 import (
-	"github.com/rn-consider/compuBackend/dao"
-	"os"
+	"database/sql"
+	"github.com/rn-consider/compuBackend/cmd/initialize"
+	"github.com/rn-consider/compuBackend/config"
+	"go.uber.org/zap"
 )
 
 func main() {
-	err := dao.InitMySQL()
-	file, err := os.Create("./issucc ess.txt")
-	if err != nil {
-		panic(err)
-	}
-	file.Write([]byte("success"))
+	// 初始化配置读取
+	config.GVA_VP = initialize.Viper()
 
-	defer file.Close()
-	defer dao.Close()
-	dao.DB.AutoMigrate()
+	// 初始化日志
+	config.GVA_LOG = initialize.Zap()
+	zap.ReplaceGlobals(config.GVA_LOG)
+
+	// 初始化数据库
+	config.GVA_DB = initialize.Gorm() // gorm连接数据库
+	if config.GVA_DB != nil {
+		// 程序结束前关闭数据库链接
+		db, _ := config.GVA_DB.DB()
+		defer func(db *sql.DB) {
+			err := db.Close()
+			if err != nil {
+				zap.L().Error("数据库关闭失败", zap.Error(err)) // 使用 Zap 打印数据库关闭失败的错误信息
+			}
+		}(db)
+	} else {
+		zap.L().Error("数据库启动失败...") // 使用 Zap 打印数据库关闭失败的错误信息
+		return
+	}
+
+	//err := dao.InitMySQL()
+	//file, err := os.Create("./issucc ess.txt")
+	//if err != nil {
+	//	panic(err)
+	//}
+	//file.Write([]byte("success"))
+	//
+	//defer file.Close()
+	//defer dao.Close()
+	//dao.DB.AutoMigrate()
 	//user1 := models.User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 	//models.CreateUser(&user1)
 	//models.DeleteUser(int(user1.ID))
