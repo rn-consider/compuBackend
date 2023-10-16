@@ -6,7 +6,7 @@ services:
     restart: on-failure
     depends_on:
       - mysql
-    network_mode: "host"  # 使用主机网络命名空间
+    network_mode: "host"
     healthcheck:
       test: ["CMD", "curl", '-f', "http://localhost:8010/health"]
       interval: 1m30s
@@ -23,4 +23,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: comback  # 创建comback数据库
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_general_ci
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     restart: always
