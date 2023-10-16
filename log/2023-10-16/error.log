@@ -8,3 +8,5 @@
 2023-10-16 15:05:34.521	[31merror[0m	/home/consider/GolandProjects/compuBackend/cmd/main.go:22	accept tcp [::]:8010: use of closed network connection
 2023-10-16 17:54:48.132	[31merror[0m	/home/consider/GolandProjects/compuBackend/cmd/main.go:22	accept tcp [::]:8010: use of closed network connection
 2023-10-16 18:53:56.580	[31merror[0m	/home/consider/GolandProjects/compuBackend/cmd/main.go:22	accept tcp [::]:8010: use of closed network connection
+2023-10-16 19:31:26.385	[31merror[0m	/home/consider/GolandProjects/compuBackend/cmd/main.go:22	accept tcp [::]:8010: use of closed network connection
+2023-10-16 19:32:53.142	[31merror[0m	/home/consider/GolandProjects/compuBackend/cmd/main.go:22	accept tcp [::]:8010: use of closed network connection

@@ -1,10 +1,21 @@
 version: '3.8'
 services:
+  backend:
+    container_name: backend
+    build: .
+    restart: on-failure
+    depends_on:
+      - mysql
+    network_mode: "host"  # 使用主机网络命名空间
+    healthcheck:
+      test: ["CMD", "curl", '-f', "http://localhost:8010/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
   mysql:
     image: mysql:8.0
     container_name: cmysql
-    ports:
-      - "3306:3306"
     volumes:
       - /home/compuBackend/mysql/conf:/etc/mysql/conf.d
       - /home/compuBackend/mysql/data:/var/lib/mysql
