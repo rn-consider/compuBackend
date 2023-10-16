@@ -16,6 +16,8 @@ services:
   mysql:
     image: mysql:8.0
     container_name: cmysql
+    ports:
+      - "3306:3306"
     volumes:
       - /home/compuBackend/mysql/conf:/etc/mysql/conf.d
       - /home/compuBackend/mysql/data:/var/lib/mysql
