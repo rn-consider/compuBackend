@@ -12,7 +12,7 @@ import (
 func CreateInfo(c *gin.Context) {
 	var req request.CreateInfoRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "创建信息请求失败，无效的请求参数"})
+		c.JSON(http.StatusBadRequest, gin.H{"code": http.StatusBadRequest, "error": "创建信息请求失败，无效的请求参数"})
 		return
 	}
 
@@ -22,18 +22,18 @@ func CreateInfo(c *gin.Context) {
 	}
 
 	if err := models.CreateInfo(&info); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "创建信息请求失败，无法创建信息"})
+		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "error": "创建信息请求失败，无法创建信息"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "信息创建成功"})
+	c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "信息创建成功"})
 }
 
 // UpdateInfo 处理更新信息请求的函数
 func UpdateInfo(c *gin.Context) {
 	var req request.UpdateInfoRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "更新信息请求失败，无效的请求参数"})
+		c.JSON(http.StatusBadRequest, gin.H{"code": http.StatusBadRequest, "error": "更新信息请求失败，无效的请求参数"})
 		return
 	}
 
@@ -41,13 +41,13 @@ func UpdateInfo(c *gin.Context) {
 
 	infoID, err := strconv.ParseUint(infoIDStr, 10, 64)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "更新信息请求失败，无效的信息 ID"})
+		c.JSON(http.StatusBadRequest, gin.H{"code": http.StatusBadRequest, "error": "更新信息请求失败，无效的信息 ID"})
 		return
 	}
 
 	info, err := models.GetInfoByID(uint(infoID))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "更新信息请求失败，无法获取信息"})
+		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "error": "更新信息请求失败，无法获取信息"})
 		return
 	}
 
@@ -60,11 +60,11 @@ func UpdateInfo(c *gin.Context) {
 	}
 
 	if err := models.UpdateInfo(info); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "更新信息请求失败，无法更新信息"})
+		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "error": "更新信息请求失败，无法更新信息"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "信息更新成功"})
+	c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "信息更新成功"})
 }
 
 // DeleteInfo 处理删除信息请求的函数
@@ -73,16 +73,16 @@ func DeleteInfo(c *gin.Context) {
 
 	infoID, err := strconv.ParseUint(infoIDStr, 10, 64)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "删除信息请求失败，无效的信息 ID"})
+		c.JSON(http.StatusBadRequest, gin.H{"code": http.StatusBadRequest, "error": "删除信息请求失败，无效的信息 ID"})
 		return
 	}
 
 	if err := models.DeleteInfo(uint(infoID)); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "删除信息请求失败，无法删除信息"})
+		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "error": "删除信息请求失败，无法删除信息"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "信息删除成功"})
+	c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "信息删除成功"})
 }
 
 // GetInfo 处理获取单个信息请求的函数
@@ -91,26 +91,26 @@ func GetInfo(c *gin.Context) {
 
 	infoID, err := strconv.ParseUint(infoIDStr, 10, 64)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "获取信息请求失败，无效的信息 ID"})
+		c.JSON(http.StatusBadRequest, gin.H{"code": http.StatusBadRequest, "error": "获取信息请求失败，无效的信息 ID"})
 		return
 	}
 
 	info, err := models.GetInfoByID(uint(infoID))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "获取信息请求失败，无法获取信息"})
+		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "error": "获取信息请求失败，无法获取信息"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"info": info})
+	c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "info": info})
 }
 
 // GetAllInfo 处理获取所有信息请求的函数
 func GetAllInfo(c *gin.Context) {
 	infos, err := models.GetAllInfos()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "获取所有信息请求失败，无法获取信息列表"})
+		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "error": "获取所有信息请求失败，无法获取信息列表"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"infos": infos})
+	c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "infos": infos})
 }

@@ -15,7 +15,7 @@ type server interface {
 }
 
 func runServer(r *gin.Engine) {
-	address := ":8000"
+	address := ":8010"
 	s := initServer(address, r)
 
 	if err := s.ListenAndServe(); err != nil {
