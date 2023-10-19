@@ -3,7 +3,7 @@ services:
   backend:
     container_name: backend
     build: .
-    restart: on-failure
+    restart: always
     depends_on:
       - mysql
     network_mode: "host"
