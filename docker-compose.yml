@@ -3,7 +3,7 @@ services:
   backend:
     container_name: backend
     build: .
-    restart: always
+    restart: on-failure
     depends_on:
       - mysql
     network_mode: "host"
@@ -29,3 +29,9 @@ services:
       MYSQL_CHARSET: utf8mb4
       MYSQL_COLLATION: utf8mb4_general_ci
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -proot"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
