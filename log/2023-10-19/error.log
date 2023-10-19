@@ -1,0 +1,1 @@
+2023-10-19 12:22:25.574	[31merror[0m	/home/consider/GolandProjects/compuBackend/cmd/main.go:22	accept tcp [::]:8010: use of closed network connection

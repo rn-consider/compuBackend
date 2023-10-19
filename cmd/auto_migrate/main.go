@@ -2,16 +2,16 @@ package main
 
 import (
 	"database/sql"
-	"github.com/rn-consider/compuBackend/cmd/initialize"
 	"github.com/rn-consider/compuBackend/config"
+	initialize2 "github.com/rn-consider/compuBackend/initialize"
 	"github.com/rn-consider/compuBackend/models"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
 func main() {
-	config.GVA_VP = initialize.Viper()
-	config.GVA_DB = initialize.Gorm() // gorm连接数据库
+	config.GVA_VP = initialize2.Viper()
+	config.GVA_DB = initialize2.Gorm() // gorm连接数据库
 
 	if config.GVA_DB != nil {
 		// 使用 AutoMigrate 方法创建表

@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
-	"github.com/rn-consider/compuBackend/cmd/initialize"
 	"github.com/rn-consider/compuBackend/config"
+	initialize2 "github.com/rn-consider/compuBackend/initialize"
 	"go.uber.org/zap"
 	"time"
 )
@@ -32,14 +32,14 @@ func initServer(address string, router *gin.Engine) server {
 }
 func main() {
 	// 初始化配置读取
-	config.GVA_VP = initialize.Viper()
+	config.GVA_VP = initialize2.Viper()
 
 	// 初始化日志
-	config.GVA_LOG = initialize.Zap()
+	config.GVA_LOG = initialize2.Zap()
 	zap.ReplaceGlobals(config.GVA_LOG)
 
 	// 初始化数据库
-	config.GVA_DB = initialize.Gorm() // gorm连接数据库
+	config.GVA_DB = initialize2.Gorm() // gorm连接数据库
 	if config.GVA_DB != nil {
 		// 程序结束前关闭数据库链接
 		db, _ := config.GVA_DB.DB()
@@ -55,7 +55,7 @@ func main() {
 	}
 
 	// 初始化Router
-	router := initialize.Routers()
+	router := initialize2.Routers()
 	if router == nil {
 		return
 	}
