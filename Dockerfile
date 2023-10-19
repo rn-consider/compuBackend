@@ -31,6 +31,5 @@ RUN go build -o main main.go
 # 移动 main 文件到上一层的根目录
 RUN mv /app/cmd/main /app/main
 WORKDIR /app
-CMD ["./auto_migrate"]
-CMD ["./main"]
+CMD ["./auto_migrate && ./main"]
 EXPOSE 8010
