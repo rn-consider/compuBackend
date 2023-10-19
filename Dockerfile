@@ -22,7 +22,8 @@ RUN go mod download
 # 编译并运行 cmd/auto_migrate/main.go
 WORKDIR /app/cmd/auto_migrate
 RUN go build -o auto_migrate main.go
-CMD ["./auto_migrate"]
+RUN mv /app/cmd/auto_migrate/auto_migrate /app/auto_migrate
+
 
 # 编译并运行 cmd/main.go，并暴露8010端口
 WORKDIR /app/cmd
@@ -30,5 +31,6 @@ RUN go build -o main main.go
 # 移动 main 文件到上一层的根目录
 RUN mv /app/cmd/main /app/main
 WORKDIR /app
+CMD ["./auto_migrate"]
 CMD ["./main"]
 EXPOSE 8010
