@@ -50,6 +50,7 @@ func main() {
 			}
 		}(db)
 	} else {
+
 		zap.L().Error("数据库启动失败，是否创建了指定数据库？...") // 使用 Zap 打印数据库关闭失败的错误信息
 		return
 	}
